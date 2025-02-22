@@ -32,6 +32,15 @@ from lmms_eval.utils import (
     simple_parse_args_string,
 )
 
+from huggingface_hub import login
+
+# Load the token from the file
+with open(".hf_token", "r") as f:
+    hf_token = f.read().strip()
+
+# Set the token for authentication
+login(token=hf_token)
+
 
 def _int_or_none_list_arg_type(min_len: int, max_len: int, defaults: str, value: str, split_char: str = ","):
     def parse_value(item):

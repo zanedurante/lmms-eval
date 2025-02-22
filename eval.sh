@@ -1,0 +1,1 @@
+python -m accelerate.commands.launch  --num_processes=1 -m lmms_eval   --model prismatic   --tasks nextqa     --batch_size 1     --log_samples     --log_samples_suffix prismatic-test-videomme --verbosity=DEBUG    --output_path ./logs/

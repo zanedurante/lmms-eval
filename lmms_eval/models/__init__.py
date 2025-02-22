@@ -38,6 +38,7 @@ AVAILABLE_MODELS = {
     "moviechat": "MovieChat",
     "mplug_owl_video": "mplug_Owl",
     "phi3v": "Phi3v",
+    "prismatic": "PrismaticVLM",
     "qwen_vl": "Qwen_VL",
     "qwen2_vl": "Qwen2_VL",
     "qwen2_5_vl": "Qwen2_5_VL",
