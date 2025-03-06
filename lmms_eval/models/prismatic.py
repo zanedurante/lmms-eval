@@ -19,9 +19,11 @@ from tqdm import tqdm
 
 decord.bridge.set_bridge('torch')
 
+MODEL_PATH = os.environ.get("PRISMATIC_MODEL_PATH", "/home/v-zadurante/code/eval_ckpts/4-frames-4-clusters/checkpoints/latest-checkpoint.pt")
+
 @dataclass
 class GenerateConfig:
-    model_path: Union[str, Path] = "/home/v-zadurante/code/eval_ckpts/4-frames-4-clusters/checkpoints/latest-checkpoint.pt"
+    model_path: Union[str, Path] = MODEL_PATH
     hf_token: Union[str, Path] = Path(".hf_token")
     do_sample: bool = False
     temperature: float = 1.0
@@ -32,7 +34,7 @@ class GenerateConfig:
 class PrismaticVLM(lmms):
     def __init__(
         self,
-        pretrained: str = "/home/v-zadurante/code/eval_ckpts/4-frames-4-clusters/checkpoints/latest-checkpoint.pt",
+        pretrained: str = MODEL_PATH,
         device: Optional[str] = "cuda:0",
         dtype: Optional[Union[str, torch.dtype]] = "auto",
         batch_size: Optional[int] = 1,
@@ -45,6 +47,9 @@ class PrismaticVLM(lmms):
         self.cfg = GenerateConfig()
         self.cfg.model_path = pretrained
         self._model = self._set_up_prismatic_vlm()
+        if hasattr(self._model, "vision_backbone") and hasattr(self._model.vision_backbone, "num_frames"):
+            self.num_frames = self._model.vision_backbone.num_frames
+            print("Dynamically loaded: num_frames = ", self.num_frames)
         self._model.to(self._device, dtype=torch.bfloat16)
         self._model.eval()
         self.prompt_template = "In: {}\nOut: "
